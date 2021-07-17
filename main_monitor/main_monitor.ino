@@ -6,8 +6,10 @@ int wetStored = 262;
 int dryStored = 571;
 int moistLow = 0;
 int moistLowCount = 0;
+int moistLowTime = 0;
 int moistHigh = 0;
 int moistHighCount = 0;
+int moistHighTime = 0;
 
 //DHT11 Technical Specifications:
 // Humidity Range: 20-90% RH
@@ -64,6 +66,9 @@ void senseMoist(int wetLim, int dryLim) {
   int percentMoist = map(rawMoist, wetLim, dryLim, 100, 0);
   Serial.print(percentMoist);
   Serial.println("%");
+  Serial.print(moistLowTime, millis() - moistLowTime);
+  Serial.print(", ");
+  Serial.println(millis() - moistLowTime);
 
   // Auto-calibrate 10 continuous low moisture events
   // If below 0% trigger low event
@@ -71,14 +76,17 @@ void senseMoist(int wetLim, int dryLim) {
     // Store event details
     moistLow = percentMoist;
     moistLowCount++;
+    if (moistLowCount == 1) moistLowTime = millis();
     // If 10 events, then set new low limit
-    if (moistLowCount > 9 && percentMoist == moistLow) {
+    if (moistLowCount > 9 && (millis() - moistLowTime) <= 20000 && percentMoist == moistLow) {
       Serial.print("New low moisture detected at ");
       Serial.print(percentMoist);
       Serial.println("%");
       dryStored = rawMoist;
       moistLowCount = 0;
       Serial.println("Low moisture limit successfully re-calibrated");
+    } else {
+      moistLowTime = 0;
     }
   }
 
