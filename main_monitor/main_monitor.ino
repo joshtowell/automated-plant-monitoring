@@ -1,8 +1,13 @@
 #include <SimpleDHT.h>
 
 const int pinDHT11 = 2;
-const int wetVal = 262;
-const int dryVal = 571;
+
+int wetVal = 262;
+int dryVal = 571;
+int moistLow = 0;
+int moistLowCount = 0;
+int moistHigh = 0;
+int moistHighCount = 0;
 
 //DHT11 Technical Specifications:
 // Humidity Range: 20-90% RH
@@ -52,4 +57,32 @@ void senseMoist() {
   int percentMoist = map(rawMoist, wetVal, dryVal, 100, 0);
   Serial.print(percentMoist);
   Serial.println("%");
+
+  // Auto-calibrate 10 continuous low moisture events
+  if (percentMoist < 0) {
+    moistLow = percentMoist;
+    moistLowCount++;
+    if (moistLowCount > 9 && percentMoist == moistLow) {
+      Serial.print("New low moisture detected at ");
+      Serial.print(percentMoist);
+      Serial.println("%");
+      dryVal = rawMoist;
+      moistLowCount = 0;
+      Serial.println("Low moisture limit successfully re-calibrated");
+    }
+  }
+
+  // Auto-calibrate 10 continuous high moisture events
+  if (percentMoist > 100) {
+    moistHigh = percentMoist;
+    moistHighCount++;
+    if (moistHighCount > 9 && percentMoist == moistHigh) {
+      Serial.print("New high moisture detected at ");
+      Serial.print(percentMoist);
+      Serial.println("%");
+      wetVal = rawMoist;
+      moistHighCount = 0;
+      Serial.println("High moisture limit successfully re-calibrated");
+    }
+  }
 }
