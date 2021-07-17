@@ -27,11 +27,12 @@ void setup() {
 }
 
 void loop() {
+  // Get and print all sensor data
   senseTempHumid();
   senseMoist(wetStored, dryStored);
   Serial.println();
 
-  // DHT11 sampling rate is 1HZ
+  // DHT11 sampling rate is 1HZ (1000ms)
   delay(1000);
 }
 
