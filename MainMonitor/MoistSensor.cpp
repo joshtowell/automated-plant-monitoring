@@ -1,6 +1,7 @@
 #include "MoistSensor.h"
 
-MoistSensor::MoistSensor(byte pin, int dryLimit, int wetLimit) {
+MoistSensor::MoistSensor(byte id, byte pin, int dryLimit, int wetLimit) {
+  this -> id = id;
   this -> pin = pin;
   this -> dryLimit = dryLimit;
   this -> wetLimit = wetLimit;
@@ -19,10 +20,14 @@ void MoistSensor::sense() {
   moistRaw = analogRead(pin);
   // Map value as percentage using known limits
   moistPcnt = map(moistRaw, dryLimit, wetLimit, 0, 100);
-  autoCalibrate();
+//  autoCalibrate();
 }
 
 void MoistSensor::autoCalibrate() {
+  Serial.println("[*] Beginning calibration...");
+
+
+  
   // Auto-calibrate 10 continuous low moisture events
   // If below 0% trigger low event
   if (moistPcnt < 0) {
@@ -32,7 +37,7 @@ void MoistSensor::autoCalibrate() {
     if (lowCount == 1) lowTime = millis();
     // If 10 events in 20s, then set new low limit
     if (lowCount > 5 && (millis() - lowTime) <= 20000 && moistPcnt == lowLastPcnt) {
-      Serial.print("New low moisture detected at ");
+      Serial.print("[!] New low moisture detected at ");
       Serial.print(moistPcnt);
       Serial.print("%");
       Serial.print(" (");
@@ -40,7 +45,7 @@ void MoistSensor::autoCalibrate() {
       Serial.println(")");
       dryLimit = moistRaw;
       lowCount = 0;
-      Serial.println("Low moisture limit successfully re-calibrated");
+      Serial.println("[✓] Low moisture limit successfully re-calibrated");
     } else {
       lowTime = 0;
     }
@@ -55,7 +60,7 @@ void MoistSensor::autoCalibrate() {
     if (highCount == 1) highTime = millis();
     // If 10 events in 20s, then set new low limit
     if (highCount > 5 && (millis() - highTime) <= 20000 && moistPcnt == highLastPcnt) {
-      Serial.print("New high moisture detected at ");
+      Serial.print("[!] New high moisture detected at ");
       Serial.print(moistPcnt);
       Serial.print("%");
       Serial.print(" (");
@@ -63,11 +68,15 @@ void MoistSensor::autoCalibrate() {
       Serial.println(")");
       wetLimit = moistRaw;
       highCount = 0;
-      Serial.println("High moisture limit successfully re-calibrated");
+      Serial.println("[✓] High moisture limit successfully re-calibrated");
     } else {
       highTime = 0;
     }
   }
+}
+
+int MoistSensor::getId() {
+  return id;
 }
 
 int MoistSensor::getRaw() {

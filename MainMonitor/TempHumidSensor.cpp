@@ -1,7 +1,8 @@
 #include <SimpleDHT.h>
 #include "TempHumidSensor.h"
 
-TempHumidSensor::TempHumidSensor(byte pin) {
+TempHumidSensor::TempHumidSensor(byte id, byte pin) {
+  this -> id = id;
   this -> pin = pin;
   error = SimpleDHTErrSuccess;
   init();
@@ -15,7 +16,7 @@ void TempHumidSensor::sense() {
   // Read raw digital sensor data
   // Catch sensor exceptions and display errors
 //  if ((error = dht11.read(&tempCelsius, &humidRelative, NULL)) != SimpleDHTErrSuccess) {
-//    Serial.print("Read DHT11 failed, err=");
+//    Serial.print("[!] Read DHT11 failed, err=");
 //    Serial.print(SimpleDHTErrCode(error));
 //    Serial.print(",");
 //    Serial.println(SimpleDHTErrDuration(error));

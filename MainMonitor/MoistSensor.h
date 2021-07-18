@@ -6,6 +6,7 @@
 class MoistSensor {
   
   private:
+    byte id;
     byte pin;
     
     byte lowCount;
@@ -22,12 +23,13 @@ class MoistSensor {
     int moistPcnt;
     
   public:
-    MoistSensor(byte pin, int dryLimit, int wetLimit);
+    MoistSensor(byte id, byte pin, int dryLimit, int wetLimit);
     void init();
     
     void sense();
     void autoCalibrate();
-    
+
+    int getId();
     int getRaw();
     int getPercent();
     

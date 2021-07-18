@@ -6,13 +6,14 @@
 class TempHumidSensor {
   
   private:
+    byte id;
     byte pin;
     int error;
     int tempCelsius;
     int humidRelative;
     
   public:
-    TempHumidSensor(byte pin);
+    TempHumidSensor(byte id, byte pin);
     void init();
     void sense();
     int getTemp(char unit);

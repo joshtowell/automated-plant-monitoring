@@ -17,16 +17,16 @@ int err = SimpleDHTErrSuccess;
 // Operating Voltage: 3V to 5.5V
 SimpleDHT11 dht11(DHT11_PIN);
 
-//TempHumidSensor(DHT11_PIN);
-MoistSensor MoistSensor1(MSTSEN_1_PIN, 612, 365); // Last calibrated 21-07-18 19:20
-MoistSensor MoistSensor2(MSTSEN_2_PIN, 625, 370); // Last calibrated 21-07-18 19:20
-MoistSensor MoistSensor3(MSTSEN_3_PIN, 615, 370); // Last calibrated 21-07-18 19:20
+//TempHumidSensor(1, DHT11_PIN);
+MoistSensor MoistSensor1(1, MSTSEN_1_PIN, 612, 365); // Last calibrated 21-07-18 19:20
+MoistSensor MoistSensor2(2, MSTSEN_2_PIN, 625, 370); // Last calibrated 21-07-18 19:20
+MoistSensor MoistSensor3(3, MSTSEN_3_PIN, 615, 370); // Last calibrated 21-07-18 19:20
 
 void setup() {
   // Intialise serial connection
   Serial.begin(9600);
   // Wait for sensors to intialise
-  Serial.println("Initializing sensors...");
+  Serial.println("[*] Initializing sensors...");
   Serial.println();
   delay(3000);
 }
@@ -47,30 +47,38 @@ void senseTempHumid() {
   // Read raw digital sensor data
   // Catch sensor exceptions and display errors
   if ((err = dht11.read(&rawTemp, &rawHumid, NULL)) != SimpleDHTErrSuccess) {
-    Serial.print("Read DHT11 failed, err=");
+    Serial.print("[!] Read DHT11 failed, err=");
     Serial.print(SimpleDHTErrCode(err));
     Serial.print(",");
     Serial.println(SimpleDHTErrDuration(err));
     delay(1000);
     return;
   } else {
+    Serial.print("Temp: ");
     Serial.print((int)rawTemp);
     Serial.println(" C");
+    Serial.print("Humid: ");
     Serial.print((int)rawHumid);
-    Serial.println(" H");
+    Serial.println(" %");
   }
 }
 
 void senseMoisture() {
-  Serial.print("MoistSensor1: ");
+  Serial.print("MS-");
+  Serial.print(MoistSensor1.getId());
+  Serial.print(": ");
   Serial.print(MoistSensor1.getPercent());
   Serial.println("%");
   
-  Serial.print("MoistSensor2: ");
+  Serial.print("MS-");
+  Serial.print(MoistSensor2.getId());
+  Serial.print(": ");
   Serial.print(MoistSensor2.getPercent());
   Serial.println("%");
   
-  Serial.print("MoistSensor3: ");
+  Serial.print("MS-");
+  Serial.print(MoistSensor3.getId());
+  Serial.print(": ");
   Serial.print(MoistSensor3.getPercent());
   Serial.println("%");
 }
