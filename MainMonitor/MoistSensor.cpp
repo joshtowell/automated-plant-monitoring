@@ -34,8 +34,10 @@ void MoistSensor::calibrate() {
   Serial.print(calibLen);
   Serial.println(" sec dry calibration in...");
   for (byte i = 8; i > 0; i--) {
-    Serial.println(i);
+    Serial.print(i);
     delay(1000);
+    if (i > 1) Serial.print(", ");
+    else Serial.println();
   }
   Serial.print("[");
   tmpSum = 0;
@@ -48,12 +50,15 @@ void MoistSensor::calibrate() {
   }
   dryLimit = tmpSum / calibLen;
   Serial.println("]");
+  Serial.println();
   Serial.print("[!] Starting ");
   Serial.print(calibLen);
   Serial.println(" sec wet calibration in...");
   for (byte i = 8; i > 0; i--) {
-    Serial.println(i);
+    Serial.print(i);
     delay(1000);
+    if (i > 1) Serial.print(", ");
+    else Serial.println();
   }
   Serial.print("[");
   tmpSum = 0;
@@ -68,6 +73,7 @@ void MoistSensor::calibrate() {
   Serial.println("]");
   Serial.println();
   Serial.println("[✓] All calibration complete");
+  Serial.println();
 }
 
 void MoistSensor::autoCalibrate() {

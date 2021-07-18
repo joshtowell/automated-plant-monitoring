@@ -11,11 +11,11 @@ class MoistSensor {
     
     byte lowCount;
     int lowLastPcnt;
-    int lowTime;
+    unsigned long lowTime;
     
     byte highCount;
     int highLastPcnt;
-    int highTime;
+    unsigned long highTime;
     
     int dryLimit;
     int wetLimit;
