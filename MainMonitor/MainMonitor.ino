@@ -7,6 +7,8 @@
 #define MSTSEN_2_PIN A1
 #define MSTSEN_3_PIN A2
 
+int err = SimpleDHTErrSuccess;
+
 //DHT11 Technical Specifications:
 // Humidity Range: 20-90% RH
 // Humidity Accuracy: ±5%RH
@@ -60,15 +62,15 @@ void senseTempHumid() {
 }
 
 void senseMoisture() {
-  Serial.print("MoistSensor1: ")
+  Serial.print("MoistSensor1: ");
   Serial.print(MoistSensor1.getPercent());
   Serial.println("%");
   
-  Serial.print("MoistSensor2: ")
+  Serial.print("MoistSensor2: ");
   Serial.print(MoistSensor2.getPercent());
   Serial.println("%");
   
-  Serial.print("MoistSensor3: ")
+  Serial.print("MoistSensor3: ");
   Serial.print(MoistSensor3.getPercent());
   Serial.println("%");
 }
