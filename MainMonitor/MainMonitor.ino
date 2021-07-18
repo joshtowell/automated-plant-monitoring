@@ -4,6 +4,8 @@
 
 #define DHT11_PIN 2
 #define MSTSEN_1_PIN A0
+#define MSTSEN_2_PIN A1
+#define MSTSEN_3_PIN A2
 
 //DHT11 Technical Specifications:
 // Humidity Range: 20-90% RH
@@ -15,6 +17,8 @@ SimpleDHT11 dht11(DHT11_PIN);
 
 //TempHumidSensor(DHT11_PIN);
 MoistSensor MoistSensor1(MSTSEN_1_PIN, 655, 294);
+MoistSensor MoistSensor2(MSTSEN_2_PIN, 655, 294);
+MoistSensor MoistSensor3(MSTSEN_3_PIN, 655, 294);
 
 void setup() {
   // Intialise serial connection
@@ -28,11 +32,9 @@ void setup() {
 void loop() {
   // Get and print all sensor data
   senseTempHumid();
-  Serial.print(MoistSensor1.getPercent());
-  Serial.println("%");
-//  Serial.println(MoistSensor1.getRaw());
+  senseMoisture();
   Serial.println();
-
+  
   // DHT11 sampling rate is 1HZ (1000ms)
   delay(1000);
 }
@@ -55,4 +57,18 @@ void senseTempHumid() {
     Serial.print((int)rawHumid);
     Serial.println(" H");
   }
+}
+
+void senseMoisture() {
+  Serial.print("MoistSensor1: ")
+  Serial.print(MoistSensor1.getPercent());
+  Serial.println("%");
+  
+  Serial.print("MoistSensor2: ")
+  Serial.print(MoistSensor2.getPercent());
+  Serial.println("%");
+  
+  Serial.print("MoistSensor3: ")
+  Serial.print(MoistSensor3.getPercent());
+  Serial.println("%");
 }
