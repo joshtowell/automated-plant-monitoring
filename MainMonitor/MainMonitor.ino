@@ -1,5 +1,6 @@
 #include <SimpleDHT.h>
 #include "MoistSensor.h"
+//#include "TempHumidSensor.h"
 
 #define DHT11_PIN 2
 #define MSTSEN_1_PIN A0
@@ -12,6 +13,7 @@
 // Operating Voltage: 3V to 5.5V
 SimpleDHT11 dht11(DHT11_PIN);
 
+//TempHumidSensor(DHT11_PIN);
 MoistSensor MoistSensor1(MSTSEN_1_PIN, 655, 294);
 
 void setup() {
@@ -38,7 +40,6 @@ void loop() {
 void senseTempHumid() {
   byte rawTemp = 0;
   byte rawHumid = 0;
-  int err = SimpleDHTErrSuccess;
   // Read raw digital sensor data
   // Catch sensor exceptions and display errors
   if ((err = dht11.read(&rawTemp, &rawHumid, NULL)) != SimpleDHTErrSuccess) {

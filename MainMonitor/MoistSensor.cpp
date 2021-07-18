@@ -11,6 +11,7 @@ MoistSensor::MoistSensor(byte pin, int dryLimit, int wetLimit) {
 
 void MoistSensor::init() {
   pinMode(pin, INPUT);
+  sense();
 }
 
 void MoistSensor::sense() {
