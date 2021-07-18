@@ -26,10 +26,9 @@ void setup() {
 void loop() {
   // Get and print all sensor data
   senseTempHumid();
-//  senseMoist(wetStored, dryStored);
   Serial.print(MoistSensor1.getPercent());
   Serial.println("%");
-  Serial.println(MoistSensor1.getRaw());
+//  Serial.println(MoistSensor1.getRaw());
   Serial.println();
 
   // DHT11 sampling rate is 1HZ (1000ms)
