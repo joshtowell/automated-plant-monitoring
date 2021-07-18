@@ -18,7 +18,7 @@ int err = SimpleDHTErrSuccess;
 SimpleDHT11 dht11(DHT11_PIN);
 
 //TempHumidSensor(DHT11_PIN);
-MoistSensor MoistSensor1(MSTSEN_1_PIN, 655, 294);
+MoistSensor MoistSensor1(MSTSEN_1_PIN, 609, 365);
 MoistSensor MoistSensor2(MSTSEN_2_PIN, 655, 294);
 MoistSensor MoistSensor3(MSTSEN_3_PIN, 655, 294);
 
@@ -66,11 +66,11 @@ void senseMoisture() {
   Serial.print(MoistSensor1.getPercent());
   Serial.println("%");
   
-  Serial.print("MoistSensor2: ");
-  Serial.print(MoistSensor2.getPercent());
-  Serial.println("%");
+//  Serial.print("MoistSensor2: ");
+//  Serial.print(MoistSensor2.getPercent());
+//  Serial.println("%");
   
-  Serial.print("MoistSensor3: ");
-  Serial.print(MoistSensor3.getPercent());
-  Serial.println("%");
+//  Serial.print("MoistSensor3: ");
+//  Serial.print(MoistSensor3.getPercent());
+//  Serial.println("%");
 }
