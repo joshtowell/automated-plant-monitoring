@@ -27,6 +27,7 @@ class MoistSensor {
     void init();
     
     void sense();
+    void calibrate();
     void autoCalibrate();
 
     int getId();

@@ -23,11 +23,54 @@ void MoistSensor::sense() {
 //  autoCalibrate();
 }
 
+
+void MoistSensor::calibrate() {
+  const int calibLen = 20;
+  int tmpSum = 0;
+  Serial.print("[*] Beginning calibration for moisture sensor ");
+  Serial.print(id);
+  Serial.println(" ...");
+  Serial.print("[!] Starting ");
+  Serial.print(calibLen);
+  Serial.println(" sec dry calibration in...");
+  for (byte i = 8; i > 0; i--) {
+    Serial.println(i);
+    delay(1000);
+  }
+  Serial.print("[");
+  tmpSum = 0;
+  for (byte i = 0; i < calibLen; i++) {
+    sense();
+    tmpSum += moistRaw;
+    delay(1000);
+    if ((i + 1) % 10 == 0) Serial.print(i + 1);
+    else Serial.print(".");
+  }
+  dryLimit = tmpSum / calibLen;
+  Serial.println("]");
+  Serial.print("[!] Starting ");
+  Serial.print(calibLen);
+  Serial.println(" sec wet calibration in...");
+  for (byte i = 8; i > 0; i--) {
+    Serial.println(i);
+    delay(1000);
+  }
+  Serial.print("[");
+  tmpSum = 0;
+  for (byte i = 0; i < calibLen; i++) {
+    sense();
+    tmpSum += moistRaw;
+    delay(1000);
+    if ((i + 1) % 10 == 0) Serial.print(i + 1);
+    else Serial.print(".");
+  }
+  wetLimit = tmpSum / calibLen;
+  Serial.println("]");
+  Serial.println();
+  Serial.println("[✓] All calibration complete");
+}
+
 void MoistSensor::autoCalibrate() {
-  Serial.println("[*] Beginning calibration...");
-
-
-  
   // Auto-calibrate 10 continuous low moisture events
   // If below 0% trigger low event
   if (moistPcnt < 0) {
